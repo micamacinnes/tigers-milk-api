@@ -1,13 +1,16 @@
-import {ApplicationConfig} from '@loopback/core';
-import {RestApplication, RestServer, RestBindings} from '@loopback/rest';
-import {MySequence} from './sequence';
+import { ApplicationConfig } from '@loopback/core';
+import { RestApplication, RestServer, RestBindings } from '@loopback/rest';
+import { MySequence } from './sequence';
 
 /* tslint:disable:no-unused-variable */
 // Binding and Booter imports are required to infer types for BootMixin!
-import {BootMixin, Booter, Binding} from '@loopback/boot';
+import { BootMixin, Booter, Binding } from '@loopback/boot';
+import { RepositoryMixin, Class, Repository, juggler } from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
 
-export class TigersMilkApiApplication extends BootMixin(RestApplication) {
+
+
+export class TigersMilkApiApplication extends BootMixin(RepositoryMixin(RestApplication)) {
   constructor(options?: ApplicationConfig) {
     super(options);
 
@@ -24,7 +27,22 @@ export class TigersMilkApiApplication extends BootMixin(RestApplication) {
         nested: true,
       },
     };
+
+
+    var dataSourceConfig = new juggler.DataSource({
+      name: "db",
+      connector: 'loopback-connector-mysql',
+      host: '127.0.0.1',
+      port: 3306,
+      database: 'tigers-milk',
+      user: 'root',
+      password: 'chiko2012'
+    });
+    this.dataSource(dataSourceConfig);
+
   }
+
+
 
   async start() {
     await super.start();
