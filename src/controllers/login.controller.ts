@@ -1,3 +1,6 @@
+// Uncomment these imports to begin using these cool features!
+
+// import {inject} from @loopback/context;
 import { repository } from "@loopback/repository";
 import { post, get, requestBody, HttpErrors } from "@loopback/rest";
 import { User } from "../models/user";
@@ -5,6 +8,7 @@ import { UserRepository } from "../repositories/users.repository";
 import { request } from "http";
 // import {Login} from '../models/login';
 import {sign, verify} from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
 
 export class LoginController {
   constructor(@repository(UserRepository.name) private userRepo: UserRepository) { }
@@ -14,12 +18,15 @@ export class LoginController {
     var users = await this.userRepo.find();
 
     var email = login.email;
-    var password = login.password;
+    var password = await bcrypt.hash(login.password, 10);
 
     for (var i = 0; i < users.length; i++) {
       var user = users[i];
-      if (user.email == email && user.password == password) {
-        
+
+     // find the user by email address if not...(look at Perry's code)
+      
+      if (user.email == email && await bcrypt.compare(login.password, user.password)) {
+
         var jwt = sign(
           {
             user: {

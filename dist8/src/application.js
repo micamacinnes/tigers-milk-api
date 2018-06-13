@@ -32,6 +32,7 @@ class TigersMilkApiApplication extends boot_1.BootMixin(repository_1.RepositoryM
             password: 'chiko2012'
         });
         this.dataSource(dataSourceConfig);
+        // this.bind("auth.service").toClass(AuthService);
     }
     async start() {
         await super.start();

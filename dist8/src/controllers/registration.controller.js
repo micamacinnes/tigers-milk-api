@@ -17,6 +17,7 @@ const repository_1 = require("@loopback/repository");
 const rest_1 = require("@loopback/rest");
 const user_1 = require("../models/user");
 const users_repository_1 = require("../repositories/users.repository");
+const bcrypt = require("bcrypt");
 let RegistrationController = class RegistrationController {
     constructor(userRepo) {
         this.userRepo = userRepo;
@@ -31,7 +32,15 @@ let RegistrationController = class RegistrationController {
         if (userExists) {
             throw new rest_1.HttpErrors.BadRequest('user already exists');
         }
-        return await this.userRepo.create(user);
+        let hashedPassword = await bcrypt.hash(user.password, 10);
+        var userToStore = new user_1.User();
+        userToStore.firstname = user.firstname;
+        userToStore.lastname = user.lastname;
+        userToStore.email = user.email;
+        userToStore.password = hashedPassword;
+        let storedUser = await this.userRepo.create(userToStore);
+        storedUser.password = "";
+        return storedUser;
     }
 };
 __decorate([

@@ -1,4 +1,5 @@
 "use strict";
+// Uncomment these imports to begin using these cool features!
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -12,12 +13,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// import {inject} from @loopback/context;
 const repository_1 = require("@loopback/repository");
 const rest_1 = require("@loopback/rest");
 const user_1 = require("../models/user");
 const users_repository_1 = require("../repositories/users.repository");
 // import {Login} from '../models/login';
 const jsonwebtoken_1 = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 let LoginController = class LoginController {
     constructor(userRepo) {
         this.userRepo = userRepo;
@@ -25,10 +28,11 @@ let LoginController = class LoginController {
     async login(login) {
         var users = await this.userRepo.find();
         var email = login.email;
-        var password = login.password;
+        var password = await bcrypt.hash(login.password, 10);
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
-            if (user.email == email && user.password == password) {
+            // find the user by email address if not...(look at Perry's code)
+            if (user.email == email && await bcrypt.compare(login.password, user.password)) {
                 var jwt = jsonwebtoken_1.sign({
                     user: {
                         id: user.user_id,

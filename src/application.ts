@@ -40,6 +40,7 @@ export class TigersMilkApiApplication extends BootMixin(RepositoryMixin(RestAppl
     });
     this.dataSource(dataSourceConfig);
 
+     // this.bind("auth.service").toClass(AuthService);
   }
 
 
