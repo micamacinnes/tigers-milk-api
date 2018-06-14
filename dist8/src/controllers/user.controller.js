@@ -36,6 +36,19 @@ let UsersController = class UsersController {
         }
         // return await this.userRepo.find();
     }
+    //http://localhost:3000/me?jwt=thetoken
+    async getMe(jwt) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required');
+        try {
+            var jwtUser = jsonwebtoken_1.verify(jwt, 'shh');
+            console.log(jwtUser);
+            return jwtUser;
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required');
+        }
+    }
 };
 __decorate([
     rest_1.get('/users'),
@@ -44,6 +57,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllUsers", null);
+__decorate([
+    rest_1.get('/me'),
+    __param(0, rest_1.param.query.string('jwt')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "getMe", null);
 UsersController = __decorate([
     __param(0, repository_1.repository(users_repository_1.UserRepository.name)),
     __metadata("design:paramtypes", [users_repository_1.UserRepository])

@@ -24,4 +24,19 @@ export class UsersController {
     }
     // return await this.userRepo.find();
   }
+
+  //http://localhost:3000/me?jwt=thetoken
+
+  @get('/me')
+  async getMe(@param.query.string('jwt') jwt:string): Promise<any> {
+    if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required');
+    try {
+      var jwtUser = verify(jwt, 'shh');
+      console.log(jwtUser);
+      return jwtUser;
+    } catch (err) {
+      throw new HttpErrors.Unauthorized('JWT token is required');
+
+    }
+  }
 }

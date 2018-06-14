@@ -14,9 +14,9 @@ export class DonationsController {
     if (!donation.charity_id || !donation.user_id || !donation.amount_donated){
       throw new HttpErrors.BadRequest('missing data');
     }
-
     return await this.donationsRepo.create(donation);
 
   }
+  
 
 }
