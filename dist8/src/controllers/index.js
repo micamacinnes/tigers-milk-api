@@ -5,4 +5,9 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./registration.controller"));
 __export(require("./login.controller"));
+__export(require("./charities.controller"));
+__export(require("./donations.controller"));
+__export(require("./payment-methods.controller"));
+__export(require("./role.controller"));
+__export(require("./role-map.controller"));
 //# sourceMappingURL=index.js.map

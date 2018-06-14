@@ -22,6 +22,25 @@ class TigersMilkApiApplication extends boot_1.BootMixin(repository_1.RepositoryM
                 nested: true,
             },
         };
+        // var enviornment = process.env.NODE_ENV;
+        // var databaseName = 'tigers-milk';
+        // // = null
+        // var databaseUsername = 'root';
+        // var databasePassword = 'chiko2012';
+        // if (enviornment == "sydney"){
+        //   databaseName = 'tigers-milk';
+        //   // = process.env.DATABASE_NAME as string;
+        // }
+        // var dataSourceConfig = new juggler.DataSource({
+        //   name: "db",
+        //   connector: 'loopback-connector-mysql',
+        //   host: '127.0.0.1',
+        //   port: 3306,
+        //   database: databaseName,
+        //   user: databaseUsername,
+        //   password: databasePassword
+        // });
+        // this.dataSource(dataSourceConfig);
         var dataSourceConfig = new repository_1.juggler.DataSource({
             name: "db",
             connector: 'loopback-connector-mysql',

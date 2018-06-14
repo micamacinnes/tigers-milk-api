@@ -15,27 +15,31 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db, callback) {
-  db.addColumn('user', 'password', {
-    type: 'string',
-    length: 2000,
-  }, function(err) {
-    if (err) return callback(err);
-    db.removeColumn('user', 'password', callback);
-  });
+  db.createTable('charity', {
+    charity_id: {
+      type: 'int',
+      primaryKey: true
+    },
+    charity_name: {
+      type: 'string',
+      length: 40
+    },
+    desc: {
+      type: 'string',
+      length: 10000
+    },
+    contact: {
+      type: "string",
+      length: 500
+    }
+  }, callback)
 };
 
 exports.down = function(db, callback) {
-  db.addColumn('user', 'password', {
-    type: 'string',
-    length: 40
-  }, function(err) {
-    if (err) return callback(err);
-      db.removeColumn('user', 'password', callback);
-    
-  });
-  // return null;
+  db.dropTable('charity', callback)
 };
 
 exports._meta = {
   "version": 1
 };
+

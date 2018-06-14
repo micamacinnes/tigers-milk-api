@@ -15,34 +15,37 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db, callback) {
-  db.createTable('user', {
-    user_id: {
+  db.createTable('donations', {
+    donations_id: {
       type: 'int',
       primaryKey: true
     },
-    firstname: {
-      type: 'string',
-      length: 40
+    charity_id: {
+      type: 'int',
+      // foreign key
     },
-    lastname: {
-      type: 'string',
-      length: 40
+    user_id: {
+      type: 'int',
+      // foreign key
     },
-    email: {
-      type: 'string',
-      length: 100
+    donation_amount: {
+      type: 'int'
+    }, 
+    date_donated: {
+      type: 'date'
     },
-    password: {
-      type: 'string',
-      length: 2048
+    payment_id: {
+      type: 'int',
+      // foreign key
     }
-  }, callback)
+  }, callback);
 };
 
 exports.down = function(db, callback) {
-  db.dropTable('user', callback)
+  db.dropTable('donations', callback);
 };
 
 exports._meta = {
   "version": 1
 };
+
