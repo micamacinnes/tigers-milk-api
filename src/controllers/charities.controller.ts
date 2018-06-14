@@ -15,15 +15,15 @@ export class CharitiesController {
   }
 
   @get('/charities/{id}')
-  async findCharityById(@param.path.number('id') id: number): Promise<Charity> {
+  async findCharityById(@param.path.number('charity_id') charity_id: number): Promise<Charity> {
     // Check for valid ID
-    let charityExists: boolean = !!(await this.charityRepo.count({ id }));
+    let charityExists: boolean = !!(await this.charityRepo.count({ charity_id }));
 
     if (!charityExists) {
-      throw new HttpErrors.BadRequest(`charity ID ${id} does not exist`);
+      throw new HttpErrors.BadRequest(`charity ID ${charity_id} does not exist`);
     }
 
-    return await this.charityRepo.findById(id);
+    return await this.charityRepo.findById(charity_id);
 
   }
 }

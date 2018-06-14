@@ -7,27 +7,15 @@ import { PaymentMethod } from "../models/payment-methods";
 import { PaymentMethodsRepository } from "../repositories/payment-methods.repository";
 
 export class PaymentMethodsController {
-  constructor(@repository(PaymentMethod.name) private paymentRepo: PaymentMethodsRepository) {}
+  constructor(@repository(PaymentMethod.name) private paymentRepo: PaymentMethodsRepository) { }
 
-  @get('payment-methods')
-  async getPaymentMethod(): Promise<Array<PaymentMethod>>{
+  @get('/payment-methods')
+  async getPaymentMethod(): Promise<PaymentMethod[]> {
     return await this.paymentRepo.find();
   }
 
-  @post('payment-methods')
-  async newPaymentMethod(@requestBody() payment_method: PaymentMethod){
-    if (!payment_method.user_id || !payment_method.card_number || 
-      !payment_method.security_code || !payment_method.exp_date) {
-      throw new HttpErrors.Unauthorized('missing data');
-    }
-
-    let paymentExists: boolean = !!(await this.paymentRepo.count({user_id: payment_method.user_id}));
-
-    if(paymentExists){
-      throw new HttpErrors.BadRequest('payment method already exists');
-    }
-
+  @post('/payment-methods')
+  async newPaymentMethod(@requestBody() payment_method: PaymentMethod) {
     return await this.paymentRepo.create(payment_method);
   }
-
 }
