@@ -4,5 +4,5 @@ export declare class CharitiesController {
     private charityRepo;
     constructor(charityRepo: CharitiesRepository);
     getCharity(): Promise<Array<Charity>>;
-    findCharityById(id: number): Promise<Charity>;
+    findCharityById(charity_id: number): Promise<Charity>;
 }

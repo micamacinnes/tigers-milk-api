@@ -22,14 +22,6 @@ let RoleController = class RoleController {
     async findRoles() {
         return await this.roleRepo.find();
     }
-    async findRolesById(id) {
-        // Check for valid ID
-        let roleExists = !!(await this.roleRepo.count({ id }));
-        if (!roleExists) {
-            throw new rest_1.HttpErrors.BadRequest(`role ID ${id} does not exist`);
-        }
-        return await this.roleRepo.findById(id);
-    }
 };
 __decorate([
     rest_1.get('/roles'),
@@ -37,13 +29,6 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], RoleController.prototype, "findRoles", null);
-__decorate([
-    rest_1.get('/roles/{role_id}'),
-    __param(0, rest_1.param.path.number('role_id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], RoleController.prototype, "findRolesById", null);
 RoleController = __decorate([
     __param(0, repository_1.repository(role_repository_1.RoleRepository)),
     __metadata("design:paramtypes", [role_repository_1.RoleRepository])

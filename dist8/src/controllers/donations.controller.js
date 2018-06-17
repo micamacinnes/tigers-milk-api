@@ -22,18 +22,44 @@ let DonationsController = class DonationsController {
     constructor(donationsRepo) {
         this.donationsRepo = donationsRepo;
     }
-    async newDonation(donation) {
-        if (!donation.charity_id || !donation.user_id || !donation.amount_donated) {
-            throw new rest_1.HttpErrors.BadRequest('missing data');
-        }
+    async getAllDonation() {
+        return await this.donationsRepo.find();
+    }
+    async DonationsPerUser(userID) {
+        return await this.donationsRepo.find({
+            where: {
+                user_id: userID
+            }
+        });
+    }
+    async newDonation(user_id, charity_id, donation_amount) {
+        var donation = new donations_1.Donations;
+        donation.amount_donated = donation_amount;
+        donation.user_id = user_id;
+        donation.charity_id = charity_id;
         return await this.donationsRepo.create(donation);
     }
 };
 __decorate([
-    rest_1.post('/donations'),
-    __param(0, rest_1.requestBody()),
+    rest_1.get('/donation'),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [donations_1.Donations]),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], DonationsController.prototype, "getAllDonation", null);
+__decorate([
+    rest_1.get('/donation/{user_id}'),
+    __param(0, rest_1.param.path.number('user_id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], DonationsController.prototype, "DonationsPerUser", null);
+__decorate([
+    rest_1.post('/user/{user_id}/charity{charity_id}/donation'),
+    __param(0, rest_1.param.path.number('user_id')),
+    __param(1, rest_1.param.path.number('charity_id')),
+    __param(2, rest_1.requestBody()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, Number]),
     __metadata("design:returntype", Promise)
 ], DonationsController.prototype, "newDonation", null);
 DonationsController = __decorate([

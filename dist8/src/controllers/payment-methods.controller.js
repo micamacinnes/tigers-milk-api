@@ -26,25 +26,17 @@ let PaymentMethodsController = class PaymentMethodsController {
         return await this.paymentRepo.find();
     }
     async newPaymentMethod(payment_method) {
-        if (!payment_method.user_id || !payment_method.card_number ||
-            !payment_method.security_code || !payment_method.exp_date) {
-            throw new rest_1.HttpErrors.Unauthorized('missing data');
-        }
-        let paymentExists = !!(await this.paymentRepo.count({ user_id: payment_method.user_id }));
-        if (paymentExists) {
-            throw new rest_1.HttpErrors.BadRequest('payment method already exists');
-        }
         return await this.paymentRepo.create(payment_method);
     }
 };
 __decorate([
-    rest_1.get('payment-methods'),
+    rest_1.get('/payment-methods'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PaymentMethodsController.prototype, "getPaymentMethod", null);
 __decorate([
-    rest_1.post('payment-methods'),
+    rest_1.post('/payment-methods'),
     __param(0, rest_1.requestBody()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [payment_methods_1.PaymentMethod]),

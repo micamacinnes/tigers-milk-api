@@ -3,6 +3,6 @@ import { PaymentMethodsRepository } from "../repositories/payment-methods.reposi
 export declare class PaymentMethodsController {
     private paymentRepo;
     constructor(paymentRepo: PaymentMethodsRepository);
-    getPaymentMethod(): Promise<Array<PaymentMethod>>;
+    getPaymentMethod(): Promise<PaymentMethod[]>;
     newPaymentMethod(payment_method: PaymentMethod): Promise<PaymentMethod>;
 }
