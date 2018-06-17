@@ -3,12 +3,22 @@
 // import {inject} from @loopback/context;
 import { repository } from "@loopback/repository";
 import { UserRepository } from "../repositories/users.repository";
-import { post, get, requestBody, HttpErrors, param } from "@loopback/rest";
+import { post, get, requestBody, HttpErrors, param, put } from "@loopback/rest";
 // import { User } from "../models/user";
 import { sign, verify } from 'jsonwebtoken';
+import { Donations } from "../models/donations";
+import { DonationsRepository } from '../repositories/donations.repository';
+import * as bcrypt from 'bcrypt';
+import { RoleMapRepository } from '../repositories/role-map.repository';
+import { PaymentMethodsRepository } from '../repositories/payment-methods.repository';
+import { PaymentMethod } from '../models/payment-methods';
 
 export class UsersController {
-  constructor(@repository(UserRepository.name) private userRepo: UserRepository) { }
+  constructor(
+    @repository(UserRepository.name) private userRepo: UserRepository,
+    @repository(DonationsRepository.name) private donationsRepo: DonationsRepository,
+    @repository(PaymentMethodsRepository.name) private paymentMethodRepo: PaymentMethodsRepository,
+    @repository(RoleMapRepository.name) private roleMapRepo: RoleMapRepository) { }
 
   @get('/users')
   async getAllUsers(@param.query.string('jwt') jwt: string): Promise<any> {
@@ -39,4 +49,19 @@ export class UsersController {
 
     }
   }
+
+  @get('users/{user_id}/donations')
+  async getDonationsByID(@param.path.number('user_id') user_id: number): Promise<Array<Donations>> {
+    let userExists: boolean = !!(await this.donationsRepo.count ({user_id:user_id}));
+    if (userExists) {
+      throw new HttpErrors.BadRequest(`user_id ${user_id} does not have any donations`);
+    }
+    return await this.donationsRepo.find({
+      where: {
+        user_id: user_id
+      }
+    });
+  }
+
+  // get payment methods
 }
