@@ -22,8 +22,10 @@ export class CharitiesController {
     if (!charityExists) {
       throw new HttpErrors.BadRequest(`charity ID ${charity_id} does not exist`);
     }
-
     return await this.charityRepo.findById(charity_id);
-
   }
+
+  // post create charity
+
+  // get charities by bank account
 }

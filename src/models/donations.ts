@@ -8,17 +8,19 @@ export class Donations extends Entity {
         type: 'number',
         id: true
     })
-    donation_id?: number;
+    donations_id?: number;
 
     @property({
         type: 'number',
         required: true
+        // foreign key
     })
     charity_id: number;
 
     @property({
         type: 'number',
         required: true
+        // foreign key
     })
     user_id: number;
 
@@ -36,7 +38,7 @@ export class Donations extends Entity {
 
     @property({
         type: 'number',
-        // required: true
+        // foreignKey
     })
     payment_id: number;
 }
