@@ -31,7 +31,8 @@
     "prestart": "npm run build:current",
     "start": "node .",
     "prepublishOnly": "npm run test",
-    "sydney-migrate": "NODE_ENV=sydney db-migrate up"
+    "sydney": "DATABASE_HOST=localhost DATABASE_NAME=tigers-milk DATABASE_USERNAME=root DATABASE_PASSWORD=chiko2012 npm start",
+    "mica": "DATABASE_HOST=localhost DATABASE_NAME=tigers-milk-api DATABASE_USERNAME=root DATABASE_PASSWORD=CampLaurel7 npm start"
   },
   "repository": {
     "type": "git"

@@ -26,7 +26,6 @@ __decorate([
     repository_1.property({
         type: 'number',
         required: true
-        // foreign key
     }),
     __metadata("design:type", Number)
 ], Donations.prototype, "userID", void 0);
@@ -34,7 +33,6 @@ __decorate([
     repository_1.property({
         type: 'number',
         required: true
-        // foreign key
     }),
     __metadata("design:type", Number)
 ], Donations.prototype, "charityID", void 0);

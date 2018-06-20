@@ -79,18 +79,6 @@ let DonationsController = class DonationsController {
             throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
         }
     }
-    async donationTotalPerUser(user_id) {
-        var totalDonations = 0;
-        var findDonations = [];
-        var findDonations = await this.donationsRepo.find();
-        for (var i = 1; i < findDonations.length + 1; i++) {
-            var donation = await this.donationsRepo.findById(i);
-            if (user_id == donation.user_id) {
-                totalDonations += donation.amount_donated;
-            }
-        }
-        return totalDonations;
-    }
 };
 __decorate([
     rest_1.get('/donation'),
