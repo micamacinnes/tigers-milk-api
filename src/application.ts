@@ -12,7 +12,12 @@ import { RepositoryMixin, Class, Repository, juggler } from '@loopback/repositor
 
 export class TigersMilkApiApplication extends BootMixin(RepositoryMixin(RestApplication)) {
   constructor(options?: ApplicationConfig) {
-    super(options);
+    //super(options);
+    super ({
+      rest: {
+        port : process.env.PORT || 3000
+      }
+    }); 
 
     // Set up the custom sequence
     this.sequence(MySequence);
@@ -51,21 +56,26 @@ export class TigersMilkApiApplication extends BootMixin(RepositoryMixin(RestAppl
     // });
     // this.dataSource(dataSourceConfig);
 
+    // var dataSourceConfig = new juggler.DataSource({
+    //   name: "db",
+    //   connector: 'memory'
+    // });
+
 
     var dataSourceConfig = new juggler.DataSource({
       name: "db",
       connector: 'loopback-connector-mysql',
-      host: '127.0.0.1',
+      host: 'ix-fs-1.ce5d5ftkvwyr.eu-west-1.rds.amazonaws.com',
       port: 3306,
-      database: 'tigers-milk',
-      user: 'root',
-      password: 'chiko2012'
+      database: 'tigers-milk-api',
+      user: 'ix_fs_1',
+      password: 'ixperience2018'
     });
     this.dataSource(dataSourceConfig);
 
-     // this.bind("auth.service").toClass(AuthService);
+    // this.bind("auth.service").toClass(AuthService);
+  
   }
-
 
 
   async start() {

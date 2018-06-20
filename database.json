@@ -4,7 +4,15 @@
         "host": "localhost",
         "port": "3306",
         "user": "root",
-        "password": "chiko2012",
+        "password": "CampLaurel7",
+        "database": "tigers-milk"
+    },
+    "mica": {
+        "driver": "mysql",
+        "host": {"ENV": "DATABASE_HOST"},
+        "port": "3306",
+        "user": {"ENV": "DATABASE_HOST"},
+        "password": "CampLaurel7",
         "database": "tigers-milk"
     }
 }
