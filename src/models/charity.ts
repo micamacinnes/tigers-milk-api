@@ -1,26 +1,42 @@
 import { Entity, property, model } from '@loopback/repository';
+import { isAbsolute } from 'path';
 
 @model()
 export class Charity extends Entity {
+
     @property({
         type: 'number',
         id: true
     })
-    charity_id?: number;
+    id?: number;
 
     @property({
         type: 'string',
         required: true
     })
-    charity_name: string;
+    name: string;
 
     @property({
         type: 'string',
-        // required: true
+        required: true
     })
-    desc: string;
+    about: string;
+
+    @property({
+        type: 'string',
+        required: true
+    })
+    img: string;
+
+
+    @property({
+        type: 'number',
+        required: true
+    })
+    bankID: number;
 
     getId() {
         return this.id;
-      }
+    }
+
 }

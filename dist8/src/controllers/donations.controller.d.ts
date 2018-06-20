@@ -1,9 +1,13 @@
 import { Donations } from "../models/donations";
 import { DonationsRepository } from "../repositories/donations.repository";
+import { UserRepository } from '../repositories/users.repository';
+import { CharitiesRepository } from '../repositories/charities.repository';
 export declare class DonationsController {
     private donationsRepo;
-    constructor(donationsRepo: DonationsRepository);
-    getAllDonation(): Promise<Array<Donations>>;
-    DonationsPerUser(userID: number): Promise<Donations[]>;
-    newDonation(user_id: number, charity_id: number, donation_amount: number): Promise<Donations>;
+    private userRepo;
+    private charityRepo;
+    constructor(donationsRepo: DonationsRepository, userRepo: UserRepository, charityRepo: CharitiesRepository);
+    getAllDonations(): Promise<Array<Donations>>;
+    getDonationsByUserId(jwt: string): Promise<object[]>;
+    createDonation(newDonation: Donations, jwt: string, charityId: number): Promise<any>;
 }

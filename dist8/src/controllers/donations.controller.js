@@ -18,26 +18,66 @@ const repository_1 = require("@loopback/repository");
 const rest_1 = require("@loopback/rest");
 const donations_1 = require("../models/donations");
 const donations_repository_1 = require("../repositories/donations.repository");
+const users_repository_1 = require("../repositories/users.repository");
+const charities_repository_1 = require("../repositories/charities.repository");
+const jsonwebtoken_1 = require("jsonwebtoken");
 let DonationsController = class DonationsController {
-    constructor(donationsRepo) {
+    constructor(donationsRepo, userRepo, charityRepo) {
         this.donationsRepo = donationsRepo;
+        this.userRepo = userRepo;
+        this.charityRepo = charityRepo;
     }
-    async getAllDonation() {
+    async getAllDonations() {
         return await this.donationsRepo.find();
     }
-    async DonationsPerUser(userID) {
-        return await this.donationsRepo.find({
-            where: {
-                user_id: userID
+    async getDonationsByUserId(jwt) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            console.log(jwtBody);
+            //Find all the donations associated with the user id
+            var userDonations = await this.donationsRepo.find({ where: { userId: jwtBody.user.id } });
+            //Convert the charityId for each donation into a charity name and logo
+            var allCharities = await this.charityRepo.find();
+            var charityIdToName = {};
+            // var charityIdToImg: { [key: number]: string } = {};
+            for (var i = 0; i < allCharities.length; ++i) {
+                let charity = allCharities[i];
+                charityIdToName[charity.id] = charity.name;
+                // charityIdToImg[charity.id as number] = charity.img;
             }
-        });
+            //Create object with userDonation properties and charity name and logo properties
+            var userDonationProperties = [];
+            for (var i = 0; i < userDonations.length; ++i) {
+                let { amount, date, charityId } = userDonations[i];
+                userDonationProperties.push({
+                    amount,
+                    date,
+                    charityName: charityIdToName[charityId],
+                });
+            }
+            return userDonationProperties;
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
+        }
     }
-    async newDonation(user_id, charity_id, donation_amount) {
-        var donation = new donations_1.Donations;
-        donation.amount_donated = donation_amount;
-        donation.user_id = user_id;
-        donation.charity_id = charity_id;
-        return await this.donationsRepo.create(donation);
+    //create a donation with userId and charityId
+    async createDonation(newDonation, jwt, charityId) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            console.log(jwtBody);
+            newDonation.userID = jwtBody.user.id;
+            newDonation.charityID = charityId;
+            var donation = this.donationsRepo.create(newDonation);
+            return donation;
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
+        }
     }
 };
 __decorate([
@@ -45,26 +85,30 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], DonationsController.prototype, "getAllDonation", null);
+], DonationsController.prototype, "getAllDonations", null);
 __decorate([
-    rest_1.get('/donation/{user_id}'),
-    __param(0, rest_1.param.path.number('user_id')),
+    rest_1.get('/donations'),
+    __param(0, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], DonationsController.prototype, "DonationsPerUser", null);
+], DonationsController.prototype, "getDonationsByUserId", null);
 __decorate([
-    rest_1.post('/user/{user_id}/charity{charity_id}/donation'),
-    __param(0, rest_1.param.path.number('user_id')),
-    __param(1, rest_1.param.path.number('charity_id')),
-    __param(2, rest_1.requestBody()),
+    rest_1.post('/createDonation'),
+    __param(0, rest_1.requestBody()),
+    __param(1, rest_1.param.query.string('jwt')),
+    __param(2, rest_1.param.query.number('charityID')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number, Number]),
+    __metadata("design:paramtypes", [donations_1.Donations, String, Number]),
     __metadata("design:returntype", Promise)
-], DonationsController.prototype, "newDonation", null);
+], DonationsController.prototype, "createDonation", null);
 DonationsController = __decorate([
     __param(0, repository_1.repository(donations_repository_1.DonationsRepository.name)),
-    __metadata("design:paramtypes", [donations_repository_1.DonationsRepository])
+    __param(1, repository_1.repository(users_repository_1.UserRepository.name)),
+    __param(2, repository_1.repository(charities_repository_1.CharitiesRepository.name)),
+    __metadata("design:paramtypes", [donations_repository_1.DonationsRepository,
+        users_repository_1.UserRepository,
+        charities_repository_1.CharitiesRepository])
 ], DonationsController);
 exports.DonationsController = DonationsController;
 //# sourceMappingURL=donations.controller.js.map

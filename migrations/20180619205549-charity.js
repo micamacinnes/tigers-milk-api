@@ -14,32 +14,40 @@ exports.setup = function(options, seedLink) {
   seed = seedLink;
 };
 
-exports.up = function(db, callback) {
+exports.up = function(db, done) {
   db.createTable('charity', {
-    charity_id: {
+    id: {
       type: 'int',
-      primaryKey: true
+      primaryKey: 'true',
+      autoIncrement: 'true'
     },
-    charity_name: {
+
+    name: {
       type: 'string',
-      length: 40
+      length: 200,
+      notNull: true
     },
-    desc: {
+
+    about: {
       type: 'string',
-      length: 10000
     },
-    contact: {
-      type: "string",
-      length: 500
-    }
-  }, callback)
+
+    img: {
+      type: 'string',
+    },
+
+    bankID: {
+      type: 'int',
+      notNull: true
+    },
+
+  }, done);
 };
 
-exports.down = function(db, callback) {
-  db.dropTable('charity', callback)
+exports.down = function(db, done) {
+  db.dropTable('charity', done)
 };
 
 exports._meta = {
   "version": 1
 };
-

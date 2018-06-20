@@ -19,9 +19,15 @@ const users_repository_1 = require("../repositories/users.repository");
 const rest_1 = require("@loopback/rest");
 // import { User } from "../models/user";
 const jsonwebtoken_1 = require("jsonwebtoken");
+const donations_repository_1 = require("../repositories/donations.repository");
+const role_map_repository_1 = require("../repositories/role-map.repository");
+const payment_methods_repository_1 = require("../repositories/payment-methods.repository");
 let UsersController = class UsersController {
-    constructor(userRepo) {
+    constructor(userRepo, donationsRepo, paymentMethodRepo, roleMapRepo) {
         this.userRepo = userRepo;
+        this.donationsRepo = donationsRepo;
+        this.paymentMethodRepo = paymentMethodRepo;
+        this.roleMapRepo = roleMapRepo;
     }
     async getAllUsers(jwt) {
         if (!jwt)
@@ -49,6 +55,17 @@ let UsersController = class UsersController {
             throw new rest_1.HttpErrors.Unauthorized('JWT token is required');
         }
     }
+    async getDonationsByID(user_id) {
+        let userExists = !!(await this.donationsRepo.count({ user_id: user_id }));
+        if (userExists) {
+            throw new rest_1.HttpErrors.BadRequest(`user_id ${user_id} does not have any donations`);
+        }
+        return await this.donationsRepo.find({
+            where: {
+                user_id: user_id
+            }
+        });
+    }
 };
 __decorate([
     rest_1.get('/users'),
@@ -64,9 +81,22 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getMe", null);
+__decorate([
+    rest_1.get('users/{user_id}/donations'),
+    __param(0, rest_1.param.path.number('user_id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "getDonationsByID", null);
 UsersController = __decorate([
     __param(0, repository_1.repository(users_repository_1.UserRepository.name)),
-    __metadata("design:paramtypes", [users_repository_1.UserRepository])
+    __param(1, repository_1.repository(donations_repository_1.DonationsRepository.name)),
+    __param(2, repository_1.repository(payment_methods_repository_1.PaymentMethodsRepository.name)),
+    __param(3, repository_1.repository(role_map_repository_1.RoleMapRepository.name)),
+    __metadata("design:paramtypes", [users_repository_1.UserRepository,
+        donations_repository_1.DonationsRepository,
+        payment_methods_repository_1.PaymentMethodsRepository,
+        role_map_repository_1.RoleMapRepository])
 ], UsersController);
 exports.UsersController = UsersController;
 //# sourceMappingURL=user.controller.js.map

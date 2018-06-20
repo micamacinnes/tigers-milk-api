@@ -1,9 +1,9 @@
 import { Entity } from '@loopback/repository';
 export declare class Donations extends Entity {
-    donation_id?: number;
-    charity_id: number;
-    user_id: number;
-    amount_donated: number;
-    date_donated: number;
-    payment_id: number;
+    id?: number;
+    userID: number;
+    charityID: number;
+    amount: number;
+    date: string;
+    getId(): number | undefined;
 }

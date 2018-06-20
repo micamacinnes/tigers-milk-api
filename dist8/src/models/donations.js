@@ -11,6 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
 let Donations = class Donations extends repository_1.Entity {
+    getId() {
+        return this.id;
+    }
 };
 __decorate([
     repository_1.property({
@@ -18,44 +21,37 @@ __decorate([
         id: true
     }),
     __metadata("design:type", Number)
-], Donations.prototype, "donation_id", void 0);
+], Donations.prototype, "id", void 0);
 __decorate([
     repository_1.property({
         type: 'number',
         required: true
     }),
     __metadata("design:type", Number)
-], Donations.prototype, "charity_id", void 0);
+], Donations.prototype, "userID", void 0);
 __decorate([
     repository_1.property({
         type: 'number',
         required: true
     }),
     __metadata("design:type", Number)
-], Donations.prototype, "user_id", void 0);
+], Donations.prototype, "charityID", void 0);
 __decorate([
     repository_1.property({
         type: 'number',
         required: true
     }),
     __metadata("design:type", Number)
-], Donations.prototype, "amount_donated", void 0);
+], Donations.prototype, "amount", void 0);
 __decorate([
     repository_1.property({
-        type: 'number',
+        type: 'string',
+        required: true
     }),
-    __metadata("design:type", Number)
-], Donations.prototype, "date_donated", void 0);
-__decorate([
-    repository_1.property({
-        type: 'number',
-    }),
-    __metadata("design:type", Number)
-], Donations.prototype, "payment_id", void 0);
+    __metadata("design:type", String)
+], Donations.prototype, "date", void 0);
 Donations = __decorate([
-    repository_1.model({
-        name: "donations"
-    })
+    repository_1.model()
 ], Donations);
 exports.Donations = Donations;
 //# sourceMappingURL=donations.js.map

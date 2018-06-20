@@ -3,6 +3,7 @@ import { CharitiesRepository } from "../repositories/charities.repository";
 export declare class CharitiesController {
     private charityRepo;
     constructor(charityRepo: CharitiesRepository);
-    getCharity(): Promise<Array<Charity>>;
-    findCharityById(charity_id: number): Promise<Charity>;
+    findCharities(jwt: string): Promise<Charity[]>;
+    postCharities(charity: Charity): Promise<Charity>;
+    findCharityById(id: number): Promise<Charity>;
 }

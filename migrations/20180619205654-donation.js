@@ -14,52 +14,57 @@ exports.setup = function(options, seedLink) {
   seed = seedLink;
 };
 
-exports.up = function(db, callback) {
-  db.createTable('RoleMap', {
-    roleMap_id: {
+exports.up = function(db, done) {
+  db.createTable('donations', {
+    id: {
       type: 'int',
-      primaryKey: true,
-      autoIncrement: true,
-      notNull: true,
-      unsigned: false,
+      primaryKey: 'true',
+      autoIncrement: 'true'
     },
-    user_id: {
+
+    charityID: {
       type: 'int',
-      unsigned: false,
-      // foreign key
+      notNull: true,
       foreignKey: {
-        name: 'user_id_foreign',
+        name: 'charityIDDonationsFk',
+        table: 'charity',
+        rules: {
+          onDelete: 'CASCADE',
+          onUpdate: 'RESTRICT'
+        },
+        mapping: 'id'
+      }
+    },
+  
+    userID: {
+      type: 'int',
+      notNull: true,
+      foreignKey: {
+        name: 'userIDDonationsFk',
         table: 'user',
         rules: {
           onDelete: 'CASCADE',
           onUpdate: 'RESTRICT'
         },
-        mapping: {
-          user_id: 'user_id'
-        }
+        mapping: 'id'
       }
     },
-    role_id: {
+
+    amount: {
       type: 'int',
-      unsigned: false,
-      // foreign key
-      foreignKey: {
-        name: 'role_id_FK',
-        table: 'role',
-        rules: {
-          onDelete: 'CASCADE',
-          onUpdate: 'RESTRICT'
-        },
-        mapping: {
-          role_id: 'role_id'
-        }
-      }
-    }
-  }, callback);
+      notNull: 'true',
+    },
+
+    date: {
+      type: 'string',
+      notNull: 'true',
+    },
+
+  }, done );
 };
 
-exports.down = function(db, callback) {
-  db.dropTable('RoleMap', callback);
+exports.down = function(db, done) {
+  db.dropTable('donations', done)
 };
 
 exports._meta = {

@@ -35,8 +35,9 @@ let LoginController = class LoginController {
             if (user.email == email && await bcrypt.compare(login.password, user.password)) {
                 var jwt = jsonwebtoken_1.sign({
                     user: {
-                        id: user.user_id,
+                        id: user.id,
                         firstname: user.firstname,
+                        lastname: user.lastname,
                         email: user.email
                     },
                     anything: "hello",

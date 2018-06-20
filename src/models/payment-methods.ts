@@ -1,41 +1,52 @@
+
 import { Entity, property, model } from '@loopback/repository';
 
-@model()
+@model({
+    name: "payment-methods"
+})
 export class PaymentMethod extends Entity {
     @property({
         type: 'number',
         id: true
     })
-    payment_id?: number;
+    id?: number;
+
+    @property({
+        type: 'string',
+        required: true
+    })
+    cardholder: string;
+
+    @property({
+        type: 'string',
+        required: true
+    })
+    paymenttoken: string;
 
     @property({
         type: 'number',
         required: true
     })
-    user_id: number;
+    amount: number;
 
     @property({
         type: 'string',
         required: true
     })
-    bank: string;
+    curency: string;
 
     @property({
-        type: 'string',
-        required: true
+        type: 'number',
+        id: true
     })
-    card_number: string;
+    userID: number;
 
     @property({
-        type: 'string',
-        required: true
+        type: 'string'
     })
-    security_code: string;
+    date: Date;
 
-    @property({
-        type: 'string',
-        required: true
-    })
-    exp_date: string;
-    
+    getId() {
+        return this.id;
+    }
 }
