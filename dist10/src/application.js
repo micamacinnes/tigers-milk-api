@@ -53,11 +53,11 @@ class TigersMilkApiApplication extends boot_1.BootMixin(repository_1.RepositoryM
         var dataSourceConfig = new repository_1.juggler.DataSource({
             name: "db",
             connector: 'loopback-connector-mysql',
-            host: '127.0.0.1',
+            host: 'ix-fs-1.ce5d5ftkvwyr.eu-west-1.rds.amazonaws.com',
             port: 3306,
             database: 'tigers-milk-api',
-            user: 'root',
-            password: 'CampLaurel7'
+            user: 'ix_fs_1',
+            password: 'ixperience2018'
         });
         this.dataSource(dataSourceConfig);
         // this.bind("auth.service").toClass(AuthService);

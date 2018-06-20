@@ -67,7 +67,7 @@ export class TigersMilkApiApplication extends BootMixin(RepositoryMixin(RestAppl
       connector: 'loopback-connector-mysql',
       host: 'ix-fs-1.ce5d5ftkvwyr.eu-west-1.rds.amazonaws.com',
       port: 3306,
-      database: 'tigers-milk-api',
+      database: 'tigers-milk',
       user: 'ix_fs_1',
       password: 'ixperience2018'
     });
