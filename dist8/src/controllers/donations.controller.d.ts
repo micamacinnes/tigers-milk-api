@@ -8,8 +8,6 @@ export declare class DonationsController {
     private charityRepo;
     constructor(donationsRepo: DonationsRepository, userRepo: UserRepository, charityRepo: CharitiesRepository);
     getAllDonations(): Promise<Array<Donations>>;
-    DonationsPerUserString(user_id: number): Promise<Array<string>>;
-    DonationsPerCharity(charity_id: number): Promise<Array<Donations>>;
-    newDonation(donation: Donations): Promise<Donations>;
-    donationTotalPerUser(user_id: number): Promise<number>;
+    getDonationsByUserId(jwt: string): Promise<object[]>;
+    createDonation(newDonation: Donations, jwt: string, charityId: number): Promise<any>;
 }

@@ -10,50 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
-let Donations = class Donations extends repository_1.Entity {
-    getId() {
-        return this.id;
-    }
+let stripeToken = class stripeToken extends repository_1.Entity {
 };
 __decorate([
     repository_1.property({
-        type: 'number',
+        type: 'string',
         id: true
     }),
     __metadata("design:type", Number)
-], Donations.prototype, "id", void 0);
+], stripeToken.prototype, "id", void 0);
 __decorate([
     repository_1.property({
         type: 'number',
-        required: true
-        // foreign key
-    }),
-    __metadata("design:type", Number)
-], Donations.prototype, "userID", void 0);
-__decorate([
-    repository_1.property({
-        type: 'number',
-        required: true
-        // foreign key
-    }),
-    __metadata("design:type", Number)
-], Donations.prototype, "charityID", void 0);
-__decorate([
-    repository_1.property({
-        type: 'number',
-        required: true
-    }),
-    __metadata("design:type", Number)
-], Donations.prototype, "amount", void 0);
-__decorate([
-    repository_1.property({
-        type: 'string',
         required: true
     }),
     __metadata("design:type", String)
-], Donations.prototype, "date", void 0);
-Donations = __decorate([
+], stripeToken.prototype, "amount", void 0);
+stripeToken = __decorate([
     repository_1.model()
-], Donations);
-exports.Donations = Donations;
-//# sourceMappingURL=donations.js.map
+], stripeToken);
+exports.stripeToken = stripeToken;
+//# sourceMappingURL=stripeToken.js.map

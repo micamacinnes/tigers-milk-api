@@ -1,44 +1,40 @@
 import { Entity, property, model } from '@loopback/repository';
 
-@model({
-    name: "donations"
-})
+@model()
 export class Donations extends Entity {
+
     @property({
         type: 'number',
         id: true
     })
-    donations_id?: number;
-
-    @property({
-        type: 'number',
-        required: true
-        // foreign key
-    })
-    charity_id: number;
-
-    @property({
-        type: 'number',
-        required: true
-        // foreign key
-    })
-    user_id: number;
+    id?: number;
 
     @property({
         type: 'number',
         required: true
     })
-    amount_donated: number;
+    userID: number;
 
     @property({
         type: 'number',
-        // required: true
+        required: true
     })
-    date_donated: number;
+    charityID: number;
 
     @property({
         type: 'number',
-        // foreignKey
+        required: true
     })
-    payment_id: number;
+    amount: number;
+
+    @property({
+        type: 'string',
+        required: true
+    })
+    date: string;
+
+    getId() {
+        return this.id;
+    }
+
 }

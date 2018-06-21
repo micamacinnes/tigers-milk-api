@@ -11,6 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
 let PaymentMethod = class PaymentMethod extends repository_1.Entity {
+    getId() {
+        return this.id;
+    }
 };
 __decorate([
     repository_1.property({
@@ -18,44 +21,52 @@ __decorate([
         id: true
     }),
     __metadata("design:type", Number)
-], PaymentMethod.prototype, "payment_id", void 0);
+], PaymentMethod.prototype, "id", void 0);
+__decorate([
+    repository_1.property({
+        type: 'string',
+        required: true
+    }),
+    __metadata("design:type", String)
+], PaymentMethod.prototype, "cardholder", void 0);
+__decorate([
+    repository_1.property({
+        type: 'string',
+        required: true
+    }),
+    __metadata("design:type", String)
+], PaymentMethod.prototype, "paymenttoken", void 0);
 __decorate([
     repository_1.property({
         type: 'number',
         required: true
     }),
     __metadata("design:type", Number)
-], PaymentMethod.prototype, "user_id", void 0);
+], PaymentMethod.prototype, "amount", void 0);
 __decorate([
     repository_1.property({
         type: 'string',
         required: true
     }),
     __metadata("design:type", String)
-], PaymentMethod.prototype, "bank", void 0);
+], PaymentMethod.prototype, "curency", void 0);
 __decorate([
     repository_1.property({
-        type: 'string',
-        required: true
+        type: 'number',
+        id: true
     }),
-    __metadata("design:type", String)
-], PaymentMethod.prototype, "card_number", void 0);
+    __metadata("design:type", Number)
+], PaymentMethod.prototype, "userID", void 0);
 __decorate([
     repository_1.property({
-        type: 'string',
-        required: true
+        type: 'string'
     }),
-    __metadata("design:type", String)
-], PaymentMethod.prototype, "security_code", void 0);
-__decorate([
-    repository_1.property({
-        type: 'string',
-        required: true
-    }),
-    __metadata("design:type", String)
-], PaymentMethod.prototype, "exp_date", void 0);
+    __metadata("design:type", Date)
+], PaymentMethod.prototype, "date", void 0);
 PaymentMethod = __decorate([
-    repository_1.model()
+    repository_1.model({
+        name: "payment-methods"
+    })
 ], PaymentMethod);
 exports.PaymentMethod = PaymentMethod;
 //# sourceMappingURL=payment-methods.js.map

@@ -30,7 +30,7 @@ export class LoginController {
         var jwt = sign(
           {
             user: {
-              id: user.user_id,
+              id: user.id,
               firstname: user.firstname,
               lastname: user.lastname,
               email: user.email

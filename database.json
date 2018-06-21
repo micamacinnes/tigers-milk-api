@@ -6,14 +6,6 @@
         "user": "root",
         "password": "CampLaurel7",
         "database": "tigers-milk"
-    },
-    "mica": {
-        "driver": "mysql",
-        "host": {"ENV": "DATABASE_HOST"},
-        "port": "3306",
-        "user": {"ENV": "DATABASE_HOST"},
-        "password": "CampLaurel7",
-        "database": "tigers-milk"
     }
-
 }
+
