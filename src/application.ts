@@ -72,17 +72,20 @@ export class TigersMilkApiApplication extends BootMixin(RepositoryMixin(RestAppl
     //   password: 'ixperience2018'
     // });
 
-     var dataSourceConfig = new juggler.DataSource({
+    var dataSourceConfig = new juggler.DataSource({
       name: "db",
       connector: 'loopback-connector-mysql',
-      host: 'localhost',
+      host: 'ix-fs-1.ce5d5ftkvwyr.eu-west-1.rds.amazonaws.com',
       port: 3306,
       database: 'tigers-milk',
       user: 'ix_fs_1',
       password: 'ixperience2018'
+    });
+  
+
       // user: 'root',
       // password: 'chiko2012'
-    });
+ 
     this.dataSource(dataSourceConfig);
 
     // this.bind("auth.service").toClass(AuthService);
