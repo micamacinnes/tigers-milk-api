@@ -50,15 +50,26 @@ class TigersMilkApiApplication extends boot_1.BootMixin(repository_1.RepositoryM
         //   name: "db",
         //   connector: 'memory'
         // });
+        // var dataSourceConfig = new juggler.DataSource({
+        //   name: "db",
+        //   connector: 'loopback-connector-mysql',
+        //   host: 'ix-fs-1.ce5d5ftkvwyr.eu-west-1.rds.amazonaws.com',
+        //   port: 3306,
+        //   database: 'tigers-milk-api',
+        //   user: 'ix_fs_1',
+        //   password: 'ixperience2018'
+        // });
         var dataSourceConfig = new repository_1.juggler.DataSource({
             name: "db",
             connector: 'loopback-connector-mysql',
             host: 'ix-fs-1.ce5d5ftkvwyr.eu-west-1.rds.amazonaws.com',
             port: 3306,
-            database: 'tigers-milk-api',
+            database: 'tigers-milk',
             user: 'ix_fs_1',
             password: 'ixperience2018'
         });
+        // user: 'root',
+        // password: 'chiko2012'
         this.dataSource(dataSourceConfig);
         // this.bind("auth.service").toClass(AuthService);
     }

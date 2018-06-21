@@ -22,6 +22,7 @@ const jsonwebtoken_1 = require("jsonwebtoken");
 const donations_repository_1 = require("../repositories/donations.repository");
 const role_map_repository_1 = require("../repositories/role-map.repository");
 const payment_methods_repository_1 = require("../repositories/payment-methods.repository");
+const user_1 = require("../models/user");
 let UsersController = class UsersController {
     constructor(userRepo, donationsRepo, paymentMethodRepo, roleMapRepo) {
         this.userRepo = userRepo;
@@ -55,16 +56,24 @@ let UsersController = class UsersController {
             throw new rest_1.HttpErrors.Unauthorized('JWT token is required');
         }
     }
-    async getDonationsByID(user_id) {
-        let userExists = !!(await this.donationsRepo.count({ user_id: user_id }));
+    async getDonationsByID(id) {
+        let userExists = !!(await this.donationsRepo.count({ id: id }));
         if (userExists) {
-            throw new rest_1.HttpErrors.BadRequest(`user_id ${user_id} does not have any donations`);
+            throw new rest_1.HttpErrors.BadRequest(`id ${id} does not have any donations`);
         }
         return await this.donationsRepo.find({
             where: {
-                user_id: user_id
+                id: id
             }
         });
+    }
+    // edit Profile
+    async editUserInfo(updateUser, id, jwt) {
+        // var user = await this.userRepo.findById(updateUser.id);
+        // let newhashedPassword = await bcrypt.hash(use.password, 10);
+        var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
+        console.log(jwtBody);
+        // return await this.userRepo.updateById(userID, user);
     }
 };
 __decorate([
@@ -82,12 +91,20 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getMe", null);
 __decorate([
-    rest_1.get('users/{user_id}/donations'),
-    __param(0, rest_1.param.path.number('user_id')),
+    rest_1.get('users/{id}/donations'),
+    __param(0, rest_1.param.path.number('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getDonationsByID", null);
+__decorate([
+    rest_1.patch('/users/{{id}}'),
+    __param(0, rest_1.requestBody()),
+    __param(1, rest_1.param.path.number('id')), __param(2, rest_1.param.query.string('jwt')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_1.User, Number, String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "editUserInfo", null);
 UsersController = __decorate([
     __param(0, repository_1.repository(users_repository_1.UserRepository.name)),
     __param(1, repository_1.repository(donations_repository_1.DonationsRepository.name)),

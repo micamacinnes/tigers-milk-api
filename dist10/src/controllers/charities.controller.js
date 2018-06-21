@@ -16,32 +16,58 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // import {inject} from '@loopback/context';
 const repository_1 = require("@loopback/repository");
 const rest_1 = require("@loopback/rest");
+const charity_1 = require("../models/charity");
 const charities_repository_1 = require("../repositories/charities.repository");
+const jsonwebtoken_1 = require("jsonwebtoken");
 let CharitiesController = class CharitiesController {
     constructor(charityRepo) {
         this.charityRepo = charityRepo;
     }
-    async getCharity() {
-        return await this.charityRepo.find();
-    }
-    async findCharityById(charity_id) {
-        // Check for valid ID
-        let charityExists = !!(await this.charityRepo.count({ charity_id }));
-        if (!charityExists) {
-            throw new rest_1.HttpErrors.BadRequest(`charity ID ${charity_id} does not exist`);
+    // @get('/charities')
+    // async getCharity(): Promise<Array<Charity>> {
+    //   return await this.charityRepo.find();
+    // }
+    async findCharities(jwt) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        var allCharities = await this.charityRepo.find();
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
+            return await this.charityRepo.find();
         }
-        return await this.charityRepo.findById(charity_id);
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
+        }
+    }
+    //create new charities
+    async postCharities(charity) {
+        return await this.charityRepo.create(charity);
+    }
+    async findCharityById(id) {
+        let charityExists = !!(await this.charityRepo.count({ id }));
+        if (!charityExists) {
+            throw new rest_1.HttpErrors.BadRequest(`user ID ${id} does not exist`);
+        }
+        return await this.charityRepo.findById(id);
     }
 };
 __decorate([
-    rest_1.get('/charities'),
+    rest_1.get('/allCharities'),
+    __param(0, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], CharitiesController.prototype, "getCharity", null);
+], CharitiesController.prototype, "findCharities", null);
 __decorate([
-    rest_1.get('/charities/{id}'),
-    __param(0, rest_1.param.path.number('charity_id')),
+    rest_1.post('/charities'),
+    __param(0, rest_1.requestBody()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [charity_1.Charity]),
+    __metadata("design:returntype", Promise)
+], CharitiesController.prototype, "postCharities", null);
+__decorate([
+    rest_1.get('/charity/{id}'),
+    __param(0, rest_1.param.path.number('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
