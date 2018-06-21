@@ -20,7 +20,8 @@ exports.up = function(db, done) {
     id: {
       type: 'int',
       primaryKey: 'true',
-      autoIncrement: 'true'
+      autoIncrement: 'true',
+      notNull: true
     },
 
     cardholder: {
@@ -59,11 +60,6 @@ exports.up = function(db, done) {
     },
 
     date: {
-      type: 'string',
-      legnth: 200,
-    },
-
-    time: {
       type: 'string',
       legnth: 200,
     },

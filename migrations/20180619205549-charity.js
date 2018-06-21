@@ -19,7 +19,8 @@ exports.up = function(db, done) {
     id: {
       type: 'int',
       primaryKey: 'true',
-      autoIncrement: 'true'
+      autoIncrement: 'true',
+      notNull: true
     },
 
     name: {
@@ -30,16 +31,17 @@ exports.up = function(db, done) {
 
     about: {
       type: 'string',
+      length: 1000
     },
 
     img: {
       type: 'string',
     },
 
-    bankID: {
-      type: 'int',
-      notNull: true
-    },
+    // bankID: {
+    //   type: 'int',
+    //   notNull: true,
+    // },
 
   }, done);
 };

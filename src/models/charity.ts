@@ -29,11 +29,11 @@ export class Charity extends Entity {
     img: string;
 
 
-    @property({
-        type: 'number',
-        required: true
-    })
-    bankID: number;
+    // @property({
+    //     type: 'number',
+    //     required: true
+    // })
+    // bankID: number;
 
     getId() {
         return this.id;

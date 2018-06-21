@@ -34,7 +34,7 @@ let DonationsController = class DonationsController {
         if (!jwt)
             throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
         try {
-            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
             console.log(jwtBody);
             //Find all the donations associated with the user id
             var userDonations = await this.donationsRepo.find({ where: { userId: jwtBody.user.id } });
@@ -60,22 +60,25 @@ let DonationsController = class DonationsController {
             return userDonationProperties;
         }
         catch (err) {
+            console.log(err);
             throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
         }
     }
     //create a donation with userId and charityId
-    async createDonation(newDonation, jwt, charityId) {
-        if (!jwt)
+    async createDonation(newDonation, jwt, charityID) {
+        if (!jwt) {
             throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        }
         try {
-            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
             console.log(jwtBody);
             newDonation.userID = jwtBody.user.id;
-            newDonation.charityID = charityId;
+            newDonation.charityID = charityID;
             var donation = this.donationsRepo.create(newDonation);
             return donation;
         }
         catch (err) {
+            console.log(err);
             throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
         }
     }
