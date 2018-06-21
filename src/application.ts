@@ -75,11 +75,11 @@ export class TigersMilkApiApplication extends BootMixin(RepositoryMixin(RestAppl
     var dataSourceConfig = new juggler.DataSource({
       name: "db",
       connector: 'loopback-connector-mysql',
-      host: 'ix-fs-1.ce5d5ftkvwyr.eu-west-1.rds.amazonaws.com',
+      host: process.env.DATABASE_HOST,
       port: 3306,
-      database: 'tigers-milk',
-      user: 'ix_fs_1',
-      password: 'ixperience2018'
+      database: process.env.DATABASE_NAME,
+      user: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD
     });
   
 
