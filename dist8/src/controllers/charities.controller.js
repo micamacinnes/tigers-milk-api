@@ -32,7 +32,7 @@ let CharitiesController = class CharitiesController {
             throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
         var allCharities = await this.charityRepo.find();
         try {
-            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
             return await this.charityRepo.find();
         }
         catch (err) {

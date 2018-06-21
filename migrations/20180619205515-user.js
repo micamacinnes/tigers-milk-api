@@ -15,7 +15,8 @@ exports.up = function(db, done) {
     id: {
       type: 'int',
       primaryKey: 'true',
-      autoIncrement: 'true'
+      autoIncrement: 'true',
+      notNull: true
     },
 
     firstname: {

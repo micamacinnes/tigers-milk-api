@@ -9,5 +9,5 @@ export declare class DonationsController {
     constructor(donationsRepo: DonationsRepository, userRepo: UserRepository, charityRepo: CharitiesRepository);
     getAllDonations(): Promise<Array<Donations>>;
     getDonationsByUserId(jwt: string): Promise<object[]>;
-    createDonation(newDonation: Donations, jwt: string, charityId: number): Promise<any>;
+    createDonation(newDonation: Donations, jwt: string, charityID: number): Promise<any>;
 }

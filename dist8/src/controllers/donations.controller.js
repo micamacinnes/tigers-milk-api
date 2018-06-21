@@ -34,7 +34,7 @@ let DonationsController = class DonationsController {
         if (!jwt)
             throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
         try {
-            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
             console.log(jwtBody);
             //Find all the donations associated with the user id
             var userDonations = await this.donationsRepo.find({ where: { userId: jwtBody.user.id } });
@@ -60,36 +60,27 @@ let DonationsController = class DonationsController {
             return userDonationProperties;
         }
         catch (err) {
+            console.log(err);
             throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
         }
     }
     //create a donation with userId and charityId
-    async createDonation(newDonation, jwt, charityId) {
-        if (!jwt)
+    async createDonation(newDonation, jwt, charityID) {
+        if (!jwt) {
             throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        }
         try {
-            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
             console.log(jwtBody);
             newDonation.userID = jwtBody.user.id;
-            newDonation.charityID = charityId;
+            newDonation.charityID = charityID;
             var donation = this.donationsRepo.create(newDonation);
             return donation;
         }
         catch (err) {
+            console.log(err);
             throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
         }
-    }
-    async donationTotalPerUser(user_id) {
-        var totalDonations = 0;
-        var findDonations = [];
-        var findDonations = await this.donationsRepo.find();
-        for (var i = 1; i < findDonations.length + 1; i++) {
-            var donation = await this.donationsRepo.findById(i);
-            if (user_id == donation.user_id) {
-                totalDonations += donation.amount_donated;
-            }
-        }
-        return totalDonations;
     }
 };
 __decorate([

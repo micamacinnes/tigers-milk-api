@@ -11,6 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
 let Charity = class Charity extends repository_1.Entity {
+    // @property({
+    //     type: 'number',
+    //     required: true
+    // })
+    // bankID: number;
     getId() {
         return this.id;
     }
@@ -43,13 +48,6 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Charity.prototype, "img", void 0);
-__decorate([
-    repository_1.property({
-        type: 'number',
-        required: true
-    }),
-    __metadata("design:type", Number)
-], Charity.prototype, "bankID", void 0);
 Charity = __decorate([
     repository_1.model()
 ], Charity);

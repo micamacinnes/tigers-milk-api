@@ -3,6 +3,7 @@ import { Donations } from "../models/donations";
 import { DonationsRepository } from '../repositories/donations.repository';
 import { RoleMapRepository } from '../repositories/role-map.repository';
 import { PaymentMethodsRepository } from '../repositories/payment-methods.repository';
+import { User } from "../models/user";
 export declare class UsersController {
     private userRepo;
     private donationsRepo;
@@ -11,5 +12,6 @@ export declare class UsersController {
     constructor(userRepo: UserRepository, donationsRepo: DonationsRepository, paymentMethodRepo: PaymentMethodsRepository, roleMapRepo: RoleMapRepository);
     getAllUsers(jwt: string): Promise<any>;
     getMe(jwt: string): Promise<any>;
-    getDonationsByID(user_id: number): Promise<Array<Donations>>;
+    getDonationsByID(id: number): Promise<Array<Donations>>;
+    editUserInfo(updateUser: User, id: number, jwt: string): Promise<any>;
 }

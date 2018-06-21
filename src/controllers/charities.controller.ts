@@ -21,7 +21,7 @@ export class CharitiesController {
     if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required.');
     var allCharities = await this.charityRepo.find();
     try {
-      var jwtBody = verify(jwt, 'encryption');
+      var jwtBody = verify(jwt, 'shh');
       return await this.charityRepo.find();
       
     } catch (err) {

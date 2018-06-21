@@ -29,7 +29,7 @@ export class DonationsController {
       if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required.');
 
       try {
-        var jwtBody = verify(jwt, 'encryption') as any;
+        var jwtBody = verify(jwt, 'shh') as any;
         console.log(jwtBody);
 
         //Find all the donations associated with the user id
@@ -64,6 +64,7 @@ export class DonationsController {
       } 
       
       catch (err) {
+        console.log(err);
         throw new HttpErrors.BadRequest('JWT token invalid');
       }
 
@@ -74,17 +75,18 @@ export class DonationsController {
   async createDonation(
     @requestBody() newDonation: Donations,
     @param.query.string('jwt') jwt: string,
-    @param.query.number('charityID') charityId: number,
+    @param.query.number('charityID') charityID: number,
     ): Promise<any>{
 
-    if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required.');
-
+    if (!jwt) {
+      throw new HttpErrors.Unauthorized('JWT token is required.');
+    }
     try {
-      var jwtBody = verify(jwt, 'encryption') as any;
+      var jwtBody = verify(jwt, 'shh') as any;
       console.log(jwtBody);
       
       newDonation.userID= jwtBody.user.id;
-      newDonation.charityID = charityId;
+      newDonation.charityID = charityID;
 
       var donation = this.donationsRepo.create(newDonation);
       return donation;
@@ -92,6 +94,7 @@ export class DonationsController {
     }
 
     catch (err) {
+      console.log(err);
       throw new HttpErrors.BadRequest('JWT token invalid');
     }
 
@@ -113,29 +116,4 @@ export class DonationsController {
   //   return totalDonations;
   // }
 
-  /*
-  @post('/stripePayment')
-  async newStripePayment(@requestBody() stripeToken: stripeToken) {
-    var stripe = require("stripe")("sk_test_CiVkzbMCwP6j6RzDEIZcJCuu");
-
-    // Token is created using Checkout or Elements!
-    // Get the payment token ID submitted by the form:
-    const token = stripeToken.id; // Using Express
-    console.log(token);
-    try {
-    const charge = stripe.charges.create({
-      amount: stripeToken.amount,
-      currency: 'usd',
-      description: 'Example charge',
-      source: token,
-      metadata: {order_id: 6735},
-    }, );
-    return charge;
-  } catch(err) {
-    console.log(err);
-    return err;
-  }
-    //return charge;
-  }
-  */
 }
