@@ -45,6 +45,7 @@ let LoginController = class LoginController {
                     issuer: 'auth.ix.co.za',
                     audience: 'ix.co.za',
                 });
+                console.log(jwt);
                 return {
                     token: jwt,
                 };

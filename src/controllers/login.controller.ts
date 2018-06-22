@@ -43,7 +43,7 @@ export class LoginController {
             audience: 'ix.co.za',
           },
         );
-
+        console.log(jwt);
         return {
           token: jwt,
         };

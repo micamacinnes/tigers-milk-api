@@ -13,5 +13,5 @@ export declare class UsersController {
     getAllUsers(jwt: string): Promise<any>;
     getMe(jwt: string): Promise<any>;
     getDonationsByID(id: number): Promise<Array<Donations>>;
-    editUserInfo(updateUser: User, id: number, jwt: string): Promise<any>;
+    editUserInfo(jwt: string, obj: Partial<User>): Promise<any>;
 }

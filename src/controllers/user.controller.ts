@@ -65,16 +65,42 @@ export class UsersController {
   }
 
   // edit Profile
-  @patch('/users/{{id}}')
-  async editUserInfo(@requestBody()
-  updateUser: User, @param.path.number('id') id: number, @param.query.string('jwt') jwt: string): Promise<any> {
+  @patch('/editUser')
+  async editUserInfo(@param.query.string('jwt') jwt: string, @requestBody() obj: Partial<User>): Promise<any> {
+    if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required');
+    try {
+      var jwtBody = verify(jwt, 'shh') as any;
+      await this.userRepo.updateById(jwtBody.user.id, obj);
+      var updatedUser = await this.userRepo.findById(jwtBody.user.id);
 
-    // var user = await this.userRepo.findById(updateUser.id);
-    // let newhashedPassword = await bcrypt.hash(use.password, 10);
-    var jwtBody = verify(jwt, 'shh') as any;
-    console.log(jwtBody);
+      // if (updatedUser.password.)
+      if (updatedUser.password.length < 12) {
+        let hashedPassword = await bcrypt.hash(updatedUser.password, 10);
+        obj.password = hashedPassword;
+        await this.userRepo.updateById(updatedUser.id, obj);
+      }
+      var jwt = sign({
+        user: {
+          id: updatedUser.id,
+          firstname: updatedUser.firstname,
+          lastname: updatedUser.lastname,
+          email: updatedUser.email
+        },
+      },
+        'shh',
+        {
+          issuer: 'auth.ix.co.za',
+          audience: 'ix.co.za',
+        },
 
+      );
+      console.log(jwt)
+      return {
+        token: jwt,
+      };
+    } catch (err) {
+      throw new HttpErrors.BadRequest('JWT token invalid');
+    }
 
-    // return await this.userRepo.updateById(userID, user);
   }
 }

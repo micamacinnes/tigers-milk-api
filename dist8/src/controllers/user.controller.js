@@ -20,9 +20,9 @@ const rest_1 = require("@loopback/rest");
 // import { User } from "../models/user";
 const jsonwebtoken_1 = require("jsonwebtoken");
 const donations_repository_1 = require("../repositories/donations.repository");
+const bcrypt = require("bcrypt");
 const role_map_repository_1 = require("../repositories/role-map.repository");
 const payment_methods_repository_1 = require("../repositories/payment-methods.repository");
-const user_1 = require("../models/user");
 let UsersController = class UsersController {
     constructor(userRepo, donationsRepo, paymentMethodRepo, roleMapRepo) {
         this.userRepo = userRepo;
@@ -68,12 +68,38 @@ let UsersController = class UsersController {
         });
     }
     // edit Profile
-    async editUserInfo(updateUser, id, jwt) {
-        // var user = await this.userRepo.findById(updateUser.id);
-        // let newhashedPassword = await bcrypt.hash(use.password, 10);
-        var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
-        console.log(jwtBody);
-        // return await this.userRepo.updateById(userID, user);
+    async editUserInfo(jwt, obj) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required');
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
+            await this.userRepo.updateById(jwtBody.user.id, obj);
+            var updatedUser = await this.userRepo.findById(jwtBody.user.id);
+            // if (updatedUser.password.)
+            if (updatedUser.password.length < 12) {
+                let hashedPassword = await bcrypt.hash(updatedUser.password, 10);
+                obj.password = hashedPassword;
+                await this.userRepo.updateById(updatedUser.id, obj);
+            }
+            var jwt = jsonwebtoken_1.sign({
+                user: {
+                    id: updatedUser.id,
+                    firstname: updatedUser.firstname,
+                    lastname: updatedUser.lastname,
+                    email: updatedUser.email
+                },
+            }, 'shh', {
+                issuer: 'auth.ix.co.za',
+                audience: 'ix.co.za',
+            });
+            console.log(jwt);
+            return {
+                token: jwt,
+            };
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
+        }
     }
 };
 __decorate([
@@ -98,11 +124,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getDonationsByID", null);
 __decorate([
-    rest_1.patch('/users/{{id}}'),
-    __param(0, rest_1.requestBody()),
-    __param(1, rest_1.param.path.number('id')), __param(2, rest_1.param.query.string('jwt')),
+    rest_1.patch('/editUser'),
+    __param(0, rest_1.param.query.string('jwt')), __param(1, rest_1.requestBody()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_1.User, Number, String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "editUserInfo", null);
 UsersController = __decorate([

@@ -61,6 +61,11 @@ exports.up = function(db, done) {
       notNull: 'true',
     },
 
+    // charityName: {
+    //   type: 'string',
+    //   notNull: 'true',
+    // },
+
   }, done );
 };
 

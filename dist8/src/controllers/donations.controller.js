@@ -37,27 +37,33 @@ let DonationsController = class DonationsController {
             var jwtBody = jsonwebtoken_1.verify(jwt, 'shh');
             console.log(jwtBody);
             //Find all the donations associated with the user id
-            var userDonations = await this.donationsRepo.find({ where: { userId: jwtBody.user.id } });
+            var userDonations = await this.donationsRepo.find({ where: { userID: jwtBody.user.id } });
+            // // var charities = await this.donationsRepo.find({where: {charityID: jwtBody.charity.id}});
+            // var charitiesInDonations = await this.donationsRepo.find({where:{
+            //   userID:jwtBody.user.id,
+            //   charityID: jwtBody.charity.id
+            // }})
             //Convert the charityId for each donation into a charity name and logo
-            var allCharities = await this.charityRepo.find();
-            var charityIdToName = {};
+            // var allCharities = await this.charityRepo.find();
+            // var charityIdToName: { [key: number]: string } = {};
             // var charityIdToImg: { [key: number]: string } = {};
-            for (var i = 0; i < allCharities.length; ++i) {
-                let charity = allCharities[i];
-                charityIdToName[charity.id] = charity.name;
-                // charityIdToImg[charity.id as number] = charity.img;
-            }
+            // for (var i = 0; i < charities.length; ++i) {
+            //   // let charity = allCharities[i];
+            //   // charityIdToName[charity.id as number] = charity.name;
+            //   // charityIdToImg[charity.id as number] = charity.img;
+            // }
             //Create object with userDonation properties and charity name and logo properties
-            var userDonationProperties = [];
-            for (var i = 0; i < userDonations.length; ++i) {
-                let { amount, date, charityId } = userDonations[i];
-                userDonationProperties.push({
-                    amount,
-                    date,
-                    charityName: charityIdToName[charityId],
-                });
-            }
-            return userDonationProperties;
+            // var userDonationProperties: Array<object> = [];
+            // for (var i = 0; i < userDonations.length; ++i) {
+            //   let { amount, date, charityID} = userDonations[i];
+            //   userDonationProperties.push({
+            //     amount,
+            //     date,
+            //     // charityName: charityIdToName[charityID as number],
+            //     // charityLogo: charityIdToImg[charityId as number],
+            //   });
+            // }
+            return userDonations;
         }
         catch (err) {
             console.log(err);
@@ -74,6 +80,8 @@ let DonationsController = class DonationsController {
             console.log(jwtBody);
             newDonation.userID = jwtBody.user.id;
             newDonation.charityID = charityID;
+            console.log(jwtBody);
+            console.log(charityID);
             var donation = this.donationsRepo.create(newDonation);
             return donation;
         }
